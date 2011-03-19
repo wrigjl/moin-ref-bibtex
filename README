@@ -1,0 +1,38 @@
+The MoinMoin wiki is good stuff, and I'm using it to work on my
+thesis.  While working, however, I need to produce references to
+entries in my bibtex database.  What follows are macros that allow
+just this.
+
+It adds two additional tags:
+
+<<Ref(bibtex-key)>>
+	This introduces a citation (and adds a footnote to the page)
+
+<<RefText(bibtex-key)>>
+	This produces the text of a citation.  It's not really
+	designed for general use.  Instead, it is called by Ref()
+	as necessary.  But, if, for some reason, you'd like to
+	have the full text of a citation, there you go!
+
+TODO:
+- automatically generate the XML bibtex db
+	- Currently, one must modify RefText.py to include a reference
+		to your xml-ified bibtex database.
+	- This database can be produced using bib2xml
+		http://www-plan.cs.colorado.edu/henkel/stuff/bib2xml/
+	  Currently it must be done manually.
+	FIX: pyliographer has a python-bibtex module, which parses
+	 a bibtex file.  The API is simply awful. however, a wrapper
+	 could be used around it.
+		http://pybliographer.org/
+	ALTERNATIVE: require the user to install bib2xml and call it
+		as necessary.  It should be possible to cache the
+		results and save off a python pickle for quick references.
+	(It might also be possible to combine the two approaches)
+- many document types are missing for formatting:
+	booklet conference inbook incollection manual mastersthesis
+	misc phdthesis proceedings techreport unpublished
+
+FUTURE:
+	- Provide a style mechanism.  Perhaps bibtex .bst could be
+	leveraged?
