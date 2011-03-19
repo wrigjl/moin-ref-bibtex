@@ -1,8 +1,7 @@
 """
     MoinMoin - Ref Macro
 
-    Collect and emit footnotes. Note that currently footnote
-    text cannot contain wiki markup.
+    Collect and emit references (as footnotes)
 
     @copyright: 2011 Jason L. Wright <jason@thought.net>
     @license: BSD
