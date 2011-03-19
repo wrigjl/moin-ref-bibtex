@@ -25,11 +25,10 @@ INSTALLATION:
 
 TODO:
 - cache copy of XML database (or parse natively)
-	- currently, bib2xml is called everytime a reference text
-	  is needed.  This is inefficient.  Perhaps we can cache
-	  the conversion results and save off a pickle.  Also,
-	  we could store the current bibdb in the request, so at
-	  least it's only done once per page?
+	- when a RefText is needed, bib2xml [bibfile] is called
+	- the resulting parse information is cached in the request
+	- is it possible to store off a pickled version and load
+	  it as necessary?  What is the "moin" way of doing so?
 - remove dependency on bib2xml
 	pyliographer has a python-bibtex module, which parses
 	 a bibtex file.  The API is simply awful. however, a wrapper
@@ -38,6 +37,8 @@ TODO:
 - many document types are missing for formatting:
 	booklet conference inbook incollection manual mastersthesis
 	misc phdthesis proceedings techreport unpublished
+- configuration should be done using moinmoin Config object
+	instead of editing the Ref.py/RefText.py
 
 FUTURE:
 	- Provide a style mechanism.  Perhaps bibtex .bst could be

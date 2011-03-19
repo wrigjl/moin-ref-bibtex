@@ -21,9 +21,10 @@ Dependencies = ["time"]
 def execute(macro, args):
     request = macro.request
     formatter = macro.formatter
-    bibkeys = {}
-    load_bibdb(bibkeys)
-    return printDocument(request, formatter, bibkeys, args)
+    if not hasattr(request, 'refbibtex_bibdb'):
+        request.refbibtex_bibdb = {}
+    load_bibdb(request.refbibtex_bibdb)
+    return printDocument(request, formatter, request.refbibtex_bibdb, args)
 
 def getText(nodelist):
     rc = []
