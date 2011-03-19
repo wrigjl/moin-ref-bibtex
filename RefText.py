@@ -10,8 +10,11 @@
 """
 
 from MoinMoin import config, wikiutil
-from MoinMoin.parser.text_moin_wiki import Parser as WikiParser
 import xml.dom.minidom
+from subprocess import Popen, PIPE
+
+bib2xml = '/usr/local/bin/bib2xml'
+bibfile = '/home/wrigjl/Desktop/reading/reading.bib'
 
 Dependencies = ["time"]
 
@@ -19,7 +22,7 @@ def execute(macro, args):
     request = macro.request
     formatter = macro.formatter
     bibkeys = {}
-    load_bibdb('/home/wrigjl/foo.xml', bibkeys)
+    load_bibdb(bibkeys)
     return printDocument(request, formatter, bibkeys, args)
 
 def getText(nodelist):
@@ -29,8 +32,13 @@ def getText(nodelist):
             rc.append(node.data)
         return ''.join(rc)
 
-def load_bibdb(fname, bibdb):
-    dom = xml.dom.minidom.parse(fname)
+def load_bibdb(bibdb):
+    pipe = Popen([bib2xml, bibfile], stdout=PIPE, stderr=PIPE)
+    sout = pipe.stdout.read()
+    serr = pipe.stderr.read()
+    rv = pipe.wait()
+    # XXX handle error
+    dom = xml.dom.minidom.parseString(sout)
     for ent in dom.getElementsByTagName("bibtex:entry"):
         id = ent.getAttribute('id')
         bibdb[id] = {}
