@@ -23,7 +23,7 @@ def execute(macro, args):
     formatter = macro.formatter
     if not hasattr(request, 'refbibtex_bibdb'):
         request.refbibtex_bibdb = {}
-    load_bibdb(request.refbibtex_bibdb)
+        load_bibdb(request.refbibtex_bibdb)
     return printDocument(request, formatter, request.refbibtex_bibdb, args)
 
 def getText(nodelist):
