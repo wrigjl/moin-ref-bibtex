@@ -9,13 +9,13 @@
     @license: BSD
 """
 
-from MoinMoin import config, wikiutil
+from MoinMoin import config
 import xml.dom.minidom
 import os
 from subprocess import Popen, PIPE
 
 bib2xml = None
-bibfile = '/home/wrigjl/Desktop/reading/reading.bib'
+bibfile = None
 
 Dependencies = ["time"]
 
@@ -24,7 +24,7 @@ def execute(macro, args):
     formatter = macro.formatter
     if not hasattr(request, 'refbibtex_bibdb'):
         request.refbibtex_bibdb = {}
-        load_bibdb(request.refbibtex_bibdb)
+        load_bibdb(request)
     return printDocument(request, formatter, request.refbibtex_bibdb, args)
 
 def getText(nodelist):
@@ -34,13 +34,19 @@ def getText(nodelist):
             rc.append(node.data)
         return ''.join(rc)
 
-def load_bibdb(bibdb):
-    global bib2xml
+def load_bibdb(request):
+    bibdb = request.refbibtex_bibdb
+    global bib2xml,bibfile
     if bib2xml == None:
-        if hasattr(config, 'refbibtex_bib2xml'):
-            bib2xml = config.refbibtex_bib2xml
+        if hasattr(request.cfg, 'refbibtex_bib2xml'):
+            bib2xml = request.cfg.refbibtex_bib2xml
         else:
             bib2xml = path_search('bib2xml')
+    if bibfile == None:
+        if hasattr(request.cfg, 'refbibtex_bibfile'):
+            bibfile = request.cfg.refbibtex_bibfile
+        else:
+            bibfile = os.path.join(request.cfg.data_dir, 'db.bib')
     pipe = Popen(['bib2xml', bibfile], executable=bib2xml,
                  stdout=PIPE, stderr=PIPE)
     sout = pipe.stdout.read()

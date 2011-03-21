@@ -21,6 +21,9 @@ INSTALLATION:
 		$(prefix)/python-$(pyver)/site-packages/MoinMoin/macro
 	  (essentially this means putting it in the same directory
 	   as "FootNote.py" which is distributed with MoinMoin)
+	- in wikiconfig.py (or whatever your configuration file is):
+		refbibtex_bib2xml = '/usr/local/bin/bib2xml'
+		refbibtex_bibfile = 'path-to-your-bibtex-file'
 	- restart moinmoin
 
 TODO:
@@ -37,8 +40,6 @@ TODO:
 - many document types are missing for formatting:
 	booklet conference inbook incollection manual mastersthesis
 	misc phdthesis proceedings techreport unpublished
-- configuration should be done using moinmoin Config object
-	instead of editing the Ref.py/RefText.py
 
 FUTURE:
 	- Provide a style mechanism.  Perhaps bibtex .bst could be
