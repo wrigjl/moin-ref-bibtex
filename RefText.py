@@ -11,9 +11,10 @@
 
 from MoinMoin import config, wikiutil
 import xml.dom.minidom
+import os
 from subprocess import Popen, PIPE
 
-bib2xml = '/usr/local/bin/bib2xml'
+bib2xml = None
 bibfile = '/home/wrigjl/Desktop/reading/reading.bib'
 
 Dependencies = ["time"]
@@ -34,7 +35,14 @@ def getText(nodelist):
         return ''.join(rc)
 
 def load_bibdb(bibdb):
-    pipe = Popen([bib2xml, bibfile], stdout=PIPE, stderr=PIPE)
+    global bib2xml
+    if bib2xml == None:
+        if hasattr(config, 'refbibtex_bib2xml'):
+            bib2xml = config.refbibtex_bib2xml
+        else:
+            bib2xml = path_search('bib2xml')
+    pipe = Popen(['bib2xml', bibfile], executable=bib2xml,
+                 stdout=PIPE, stderr=PIPE)
     sout = pipe.stdout.read()
     serr = pipe.stderr.read()
     rv = pipe.wait()
@@ -137,3 +145,11 @@ if __name__ == "__main__":
         print '%s' % (i)
         print '%s' % (printDocument(bibdb, i))
 
+def path_search(fname):
+    path = os.getenv('PATH')
+    if path == None:
+        return None
+    for i in path.split(os.pathsep):
+        if os.access(os.path.join(i, 'bib2xml'), os.X_OK):
+            return os.path.join(i, 'bib2xml')
+    return None
